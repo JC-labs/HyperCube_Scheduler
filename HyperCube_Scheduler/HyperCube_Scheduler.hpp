@@ -7,4 +7,6 @@ public:
 	HyperCube_Scheduler(QWidget *parent = Q_NULLPTR);
 private:
 	Ui::HyperCube_SchedulerClass ui;
+public slots:
+	void run();
 };

@@ -1,25 +1,52 @@
-<UI version="4.0" >
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
  <class>HyperCube_SchedulerClass</class>
- <widget class="QWidget" name="HyperCube_SchedulerClass" >
-  <property name="objectName" >
-   <string notr="true">HyperCube_SchedulerClass</string>
-  </property>
-  <property name="geometry" >
+ <widget class="QWidget" name="HyperCube_SchedulerClass">
+  <property name="geometry">
    <rect>
-	<x>0</x>
-	<y>0</y>
-	<width>600</width>
-	<height>400</height>
+    <x>0</x>
+    <y>0</y>
+    <width>728</width>
+    <height>543</height>
    </rect>
   </property>
-  <property name="windowTitle" >
+  <property name="windowTitle">
    <string>HyperCube_Scheduler</string>
   </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <item>
+      <widget class="QLineEdit" name="size">
+       <property name="text">
+        <string>5</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="1,5">
+     <item>
+      <widget class="QTableWidget" name="nodes"/>
+     </item>
+     <item>
+      <widget class="QTableWidget" name="links"/>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <widget class="QPushButton" name="run">
+     <property name="text">
+      <string>Run</string>
+     </property>
+    </widget>
+   </item>
+  </layout>
  </widget>
- <layoutDefault spacing="6" margin="11" />
- <pixmapfunction></pixmapfunction>
+ <layoutdefault spacing="6" margin="11"/>
  <resources>
-   <include location="HyperCube_Scheduler.qrc"/>
+  <include location="HyperCube_Scheduler.qrc"/>
  </resources>
  <connections/>
-</UI>
+</ui>
