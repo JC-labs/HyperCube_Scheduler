@@ -11,6 +11,9 @@
 
 #include <QtCore/QVariant>
 #include <QtWidgets/QApplication>
+#include <QtWidgets/QHBoxLayout>
+#include <QtWidgets/QPushButton>
+#include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QWidget>
 
 QT_BEGIN_NAMESPACE
@@ -18,12 +21,30 @@ QT_BEGIN_NAMESPACE
 class Ui_HyperCube_SchedulerClass
 {
 public:
+    QVBoxLayout *verticalLayout;
+    QHBoxLayout *layout;
+    QPushButton *run;
 
     void setupUi(QWidget *HyperCube_SchedulerClass)
     {
         if (HyperCube_SchedulerClass->objectName().isEmpty())
             HyperCube_SchedulerClass->setObjectName(QStringLiteral("HyperCube_SchedulerClass"));
-        HyperCube_SchedulerClass->resize(600, 400);
+        HyperCube_SchedulerClass->resize(1101, 478);
+        verticalLayout = new QVBoxLayout(HyperCube_SchedulerClass);
+        verticalLayout->setSpacing(6);
+        verticalLayout->setContentsMargins(11, 11, 11, 11);
+        verticalLayout->setObjectName(QStringLiteral("verticalLayout"));
+        layout = new QHBoxLayout();
+        layout->setSpacing(6);
+        layout->setObjectName(QStringLiteral("layout"));
+
+        verticalLayout->addLayout(layout);
+
+        run = new QPushButton(HyperCube_SchedulerClass);
+        run->setObjectName(QStringLiteral("run"));
+
+        verticalLayout->addWidget(run);
+
 
         retranslateUi(HyperCube_SchedulerClass);
 
@@ -33,6 +54,7 @@ public:
     void retranslateUi(QWidget *HyperCube_SchedulerClass)
     {
         HyperCube_SchedulerClass->setWindowTitle(QApplication::translate("HyperCube_SchedulerClass", "HyperCube_Scheduler", nullptr));
+        run->setText(QApplication::translate("HyperCube_SchedulerClass", "Run", nullptr));
     } // retranslateUi
 
 };
