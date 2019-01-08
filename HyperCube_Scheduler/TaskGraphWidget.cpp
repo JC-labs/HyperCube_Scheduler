@@ -54,7 +54,7 @@ void TaskGraphWidget::mouseDoubleClickEvent(QMouseEvent *event) {
 		auto d0 = QVector2D(QPointF(nodes[link.n1].x, nodes[link.n1].y) - m_p).length();
 		auto d1 = QVector2D(QPointF(nodes[link.n2].x, nodes[link.n2].y) - m_p).length();
 		auto d2 = QVector2D(QPointF(nodes[link.n1].x, nodes[link.n1].y) - QPointF(nodes[link.n2].x, nodes[link.n2].y)).length();
-		if (fabs(d2 - d1 - d0) < 1.0 / 120) {
+		if (fabs(d2 - d1 - d0) < 1.0 / 120 && d0 > 1.0 / 24 && d1 > 1.0 / 24) {
 			link.w = QInputDialog::getDouble(this, "New Weight", "Enter new weight: ", 1, 0, 100, 6);
 			insert = false;
 		}

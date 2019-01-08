@@ -62,10 +62,15 @@ ProcessorMatrixWidget::ProcessorMatrixWidget(QWidget *parent) : QWidget(parent) 
 				ui.nodes->item(i, j)->setText(QString::number(d(g)));
 		for (size_t i = 0; i < ui.links->rowCount(); i++)
 			for (size_t j = 0; j < ui.links->columnCount(); j++)
-				ui.links->item(i, j)->setText(QString::number(d(g)));
+				if (ui.links->item(i, j)->flags() & Qt::ItemFlag::ItemIsEnabled)
+					ui.links->item(i, j)->setText(QString::number(d(g)));
 	});
 
 	ui.size->setValue(3);
+
+	connect(ui.links, &QTableWidget::cellChanged, this, [this](int row, int col) {
+		ui.links->item(col, row)->setText(ui.links->item(row, col)->text());
+	});
 }
 ProcessorMatrixWidget::~ProcessorMatrixWidget() {}
 
