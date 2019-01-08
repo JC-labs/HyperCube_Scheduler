@@ -36,14 +36,50 @@
     <ClCompile Include="HyperCube_Scheduler.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="ProcessorMatrixWidget.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TaskGraphWidget.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ResultWidget.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="WeightDialog.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="HyperCube_Scheduler.hpp">
       <Filter>Header Files</Filter>
     </QtMoc>
+    <QtMoc Include="ProcessorMatrixWidget.hpp">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="TaskGraphWidget.hpp">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="ResultWidget.hpp">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="WeightDialog.hpp">
+      <Filter>Header Files</Filter>
+    </QtMoc>
   </ItemGroup>
   <ItemGroup>
     <QtUic Include="HyperCube_Scheduler.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+    <QtUic Include="ProcessorMatrixWidget.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+    <QtUic Include="TaskGraphWidget.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+    <QtUic Include="ResultWidget.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+    <QtUic Include="WeightDialog.ui">
       <Filter>Form Files</Filter>
     </QtUic>
   </ItemGroup>

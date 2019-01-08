@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>728</width>
-    <height>543</height>
+    <width>1101</width>
+    <height>491</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -15,25 +15,7 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
-    <layout class="QHBoxLayout" name="horizontalLayout">
-     <item>
-      <widget class="QLineEdit" name="size">
-       <property name="text">
-        <string>5</string>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </item>
-   <item>
-    <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="1,5">
-     <item>
-      <widget class="QTableWidget" name="nodes"/>
-     </item>
-     <item>
-      <widget class="QTableWidget" name="links"/>
-     </item>
-    </layout>
+    <layout class="QHBoxLayout" name="layout"/>
    </item>
    <item>
     <widget class="QPushButton" name="run">
