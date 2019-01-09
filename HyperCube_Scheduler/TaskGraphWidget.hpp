@@ -38,7 +38,7 @@ public:
 	TaskGraphWidget(QWidget *parent = Q_NULLPTR);
 	~TaskGraphWidget();
 
-	std::list<std::pair<std::shared_ptr<GraphNode>, double>> get_b_levels() const;
+	std::list<std::pair<std::shared_ptr<GraphNode>, std::pair<double, size_t>>> get_b_levels() const;
 	std::list<std::shared_ptr<GraphNode>> to_graph() const;
 private:
 	double size, scale;
@@ -61,5 +61,5 @@ protected:
 
 	std::pair<size_t const, Node>* find_node(double x, double y);
 
-	void add_b_levels(std::shared_ptr<GraphNode> node, std::map<std::shared_ptr<GraphNode>, double> &ret, double current = 0.0) const;
+	void add_b_levels(std::shared_ptr<GraphNode> node, std::map<std::shared_ptr<GraphNode>, std::pair<double, size_t>> &ret, double current = 0.0, size_t path = 0) const;
 };

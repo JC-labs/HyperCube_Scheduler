@@ -18,11 +18,8 @@ void TaskGraphWidget::paintEvent(QPaintEvent *event) {
 	p.setPen(QPen(QColor(10, 10, 10)));
 	p.setBrush(QBrush(QColor(255, 255, 255)));
 	p.setRenderHint(QPainter::Antialiasing, true);
-
-	double size = std::min(width(), height());
-	double scale = size / 12;
-
 	p.setFont(QFont("Verdana", scale / 6));
+
 	if (trail)
 		p.drawLine(c_x * size + scale / 2, c_y * size + scale / 2,
 				   b_x * size + scale / 2, b_y * size + scale / 2);
@@ -111,7 +108,7 @@ void TaskGraphWidget::mouseReleaseEvent(QMouseEvent *event) {
 
 		auto b = find_node(b_x, b_y);
 		auto e = find_node((event->x() - scale / 2) / size, (event->y() - scale / 2) / size);
-		if (b && e)
+		if (b && e && b != e)
 			links.insert(Link{b->first, e->first, 1});
 	}
 	update();
@@ -154,14 +151,14 @@ std::list<std::shared_ptr<GraphNode>> TaskGraphWidget::to_graph() const {
 			ret.push_back(node.second.first);
 	return ret;
 }
-std::list<std::pair<std::shared_ptr<GraphNode>, double>> TaskGraphWidget::get_b_levels() const {
+std::list<std::pair<std::shared_ptr<GraphNode>, std::pair<double, size_t>>> TaskGraphWidget::get_b_levels() const {
 	auto graph = to_graph();
 
-	std::map<std::shared_ptr<GraphNode>, double> _nodes;
+	std::map<std::shared_ptr<GraphNode>, std::pair<double, size_t>> _nodes;
 	for (auto sub_graph : graph)
 		add_b_levels(sub_graph, _nodes);
 
-	std::list<std::pair<std::shared_ptr<GraphNode>, double>> ret{_nodes.begin(), _nodes.end()};
+	std::list<std::pair<std::shared_ptr<GraphNode>, std::pair<double, size_t>>> ret{_nodes.begin(), _nodes.end()};
 
 	ret.sort([](auto const& a, auto const& b) -> bool {
 		if (a.first->ds.size() == 0 && b.first->ds.size() != 0)
@@ -173,12 +170,13 @@ std::list<std::pair<std::shared_ptr<GraphNode>, double>> TaskGraphWidget::get_b_
 
 	return ret;
 }
-void TaskGraphWidget::add_b_levels(std::shared_ptr<GraphNode> node, std::map<std::shared_ptr<GraphNode>, double>& ret, double current) const {
+void TaskGraphWidget::add_b_levels(std::shared_ptr<GraphNode> node, std::map<std::shared_ptr<GraphNode>, std::pair<double, size_t>>& ret, double current, size_t path) const {
 	auto next = current + node->w;
 	auto found = ret.find(node);
-	if (found == ret.end() || next < found->second)
-		ret[node] = next;
-		//ret.insert(std::make_pair(node, next));
+	if (found == ret.end() || next < found->second.first || path < found->second.second) {
+		ret[node].first = next;
+		ret[node].second = path + 1;
+	}
 	for (auto d : node->ds)
-		add_b_levels(d.first, ret, next);
+		add_b_levels(d.first, ret, next, path + 1);
 }

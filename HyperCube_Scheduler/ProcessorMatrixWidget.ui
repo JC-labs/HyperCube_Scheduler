@@ -35,10 +35,24 @@
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="1,5">
      <item>
-      <widget class="QTableWidget" name="nodes"/>
+      <widget class="QTableWidget" name="nodes">
+       <attribute name="horizontalHeaderDefaultSectionSize">
+        <number>50</number>
+       </attribute>
+       <attribute name="horizontalHeaderMinimumSectionSize">
+        <number>50</number>
+       </attribute>
+      </widget>
      </item>
      <item>
-      <widget class="QTableWidget" name="links"/>
+      <widget class="QTableWidget" name="links">
+       <attribute name="horizontalHeaderDefaultSectionSize">
+        <number>50</number>
+       </attribute>
+       <attribute name="horizontalHeaderMinimumSectionSize">
+        <number>50</number>
+       </attribute>
+      </widget>
      </item>
     </layout>
    </item>

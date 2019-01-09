@@ -22,6 +22,11 @@ ProcessorMatrixWidget::ProcessorMatrixWidget(QWidget *parent) : QWidget(parent) 
 		ui.links->setRowCount(value);
 		ui.links->setColumnCount(value);
 
+		//for (size_t j = 0; j < ui.links->columnCount(); j++)
+		//	ui.links->setColumnWidth(j, 15);
+		//for (size_t j = 0; j < ui.nodes->columnCount(); j++)
+		//	ui.nodes->setColumnWidth(j, 15);
+
 		for (size_t i = 0; i < ui.nodes->rowCount(); i++)
 			for (size_t j = 0; j < ui.nodes->columnCount(); j++) {
 				ui.nodes->setItem(i, j, new QTableWidgetItem("1.0"));
@@ -47,11 +52,6 @@ ProcessorMatrixWidget::ProcessorMatrixWidget(QWidget *parent) : QWidget(parent) 
 				item->setFlags(item->flags().setFlag(Qt::ItemFlag::ItemIsEnabled, true));
 			}
 		}, input);
-
-		for (size_t j = 0; j < ui.links->columnCount(); j++)
-			ui.links->setColumnWidth(j, 20);
-		for (size_t j = 0; j < ui.nodes->columnCount(); j++)
-			ui.nodes->setColumnWidth(j, 20);
 	});
 	connect(ui.fill, &QPushButton::clicked, this, [this]() {
 		static std::mt19937_64 g(std::random_device{}());
@@ -69,12 +69,15 @@ ProcessorMatrixWidget::ProcessorMatrixWidget(QWidget *parent) : QWidget(parent) 
 	ui.size->setValue(3);
 
 	connect(ui.links, &QTableWidget::cellChanged, this, [this](int row, int col) {
-		ui.links->item(col, row)->setText(ui.links->item(row, col)->text());
+		if (ui.links->item(col, row))
+			ui.links->item(col, row)->setText(ui.links->item(row, col)->text());
+		else
+			ui.links->setItem(col, row, new QTableWidgetItem(ui.links->item(row, col)->text()));
 	});
 }
 ProcessorMatrixWidget::~ProcessorMatrixWidget() {}
 
-std::vector<std::vector<double>> ProcessorMatrixWidget::get_links() {
+std::vector<std::vector<double>> ProcessorMatrixWidget::get_links() const {
 	std::vector<std::vector<double>> ret;
 	for (size_t i = 0; i < ui.links->rowCount(); i++) {
 		std::vector<double> temp;
@@ -84,9 +87,15 @@ std::vector<std::vector<double>> ProcessorMatrixWidget::get_links() {
 	}
 	return ret;
 }
-std::vector<double> ProcessorMatrixWidget::get_nodes() {
+std::vector<double> ProcessorMatrixWidget::get_nodes() const {
 	std::vector<double> ret;
 	for (size_t i = 0; i < ui.nodes->rowCount(); i++)
 		ret.push_back(ui.nodes->item(i, 0)->text().toDouble());
 	return ret;
+}
+
+void ProcessorMatrixWidget::update_links(std::vector<std::vector<double>>& links) {
+	for (size_t i = 0; i < ui.links->rowCount(); i++)
+		for (size_t j = 0; j < ui.links->columnCount(); j++)
+			ui.links->item(i, j)->setText(QString::number(links.at(i).at(j)));
 }
