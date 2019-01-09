@@ -19,4 +19,6 @@ void HyperCube_Scheduler::run() {
 	auto temp = processor_matrix->get();
 	auto nodes = temp.first;
 	auto links = temp.second;
+
+	auto b_levels = task_graph->get_b_levels();
 }

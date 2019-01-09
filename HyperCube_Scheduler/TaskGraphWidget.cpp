@@ -68,9 +68,11 @@ void TaskGraphWidget::mouseDoubleClickEvent(QMouseEvent *event) {
 				insert = false;
 		}
 
-		if (insert)
-			nodes.insert(std::make_pair(INDEX_COUNTER++,
-										Node{m_p.x(), m_p.y(), 1}));
+		if (insert) {
+			nodes.insert(std::make_pair(INDEX_COUNTER,
+										Node{INDEX_COUNTER, m_p.x(), m_p.y(), 1}));
+			INDEX_COUNTER++;
+		}
 	}
 	update();
 	event->accept();
@@ -120,4 +122,63 @@ std::pair<size_t const, Node>* TaskGraphWidget::find_node(double x, double y) {
 		if (QVector2D(QPointF(node.second.x, node.second.y) - QPointF(x, y)).length() < 1.0 / 24)
 			return &node;
 	return nullptr;
+}
+
+bool compute_direction(size_t n1, size_t n2, std::map<size_t, Node> const& nodes) {
+	if (nodes.at(n1).y == nodes.at(n2).y)
+		return nodes.at(n1).x < nodes.at(n2).x;
+	else
+		return nodes.at(n1).y < nodes.at(n2).y;
+}
+
+std::list<std::shared_ptr<GraphNode>> TaskGraphWidget::to_graph() const {
+	std::map<size_t, std::pair<std::shared_ptr<GraphNode>, bool>> _nodes;
+
+	for (auto &node : nodes)
+		_nodes.insert(std::make_pair(node.first,
+									 std::make_pair(std::make_shared<GraphNode>(node.second), true)));
+
+	for (auto &link : links) {
+		if (compute_direction(link.n1, link.n2, nodes)) {
+			_nodes.at(link.n1).second = false;
+			_nodes.at(link.n2).first->ds.push_back(std::make_pair(_nodes.at(link.n1).first, link.w));
+		} else {
+			_nodes.at(link.n2).second = false;
+			_nodes.at(link.n1).first->ds.push_back(std::make_pair(_nodes.at(link.n2).first, link.w));
+		}
+	}
+
+	std::list<std::shared_ptr<GraphNode>> ret;
+	for (auto &node : _nodes)
+		if (node.second.second)
+			ret.push_back(node.second.first);
+	return ret;
+}
+std::list<std::pair<std::shared_ptr<GraphNode>, double>> TaskGraphWidget::get_b_levels() const {
+	auto graph = to_graph();
+
+	std::map<std::shared_ptr<GraphNode>, double> _nodes;
+	for (auto sub_graph : graph)
+		add_b_levels(sub_graph, _nodes);
+
+	std::list<std::pair<std::shared_ptr<GraphNode>, double>> ret{_nodes.begin(), _nodes.end()};
+
+	ret.sort([](auto const& a, auto const& b) -> bool {
+		if (a.first->ds.size() == 0 && b.first->ds.size() != 0)
+			return true;
+		if (a.first->ds.size() != 0 && b.first->ds.size() == 0)
+			return false;
+		return a.second > b.second;
+	});
+
+	return ret;
+}
+void TaskGraphWidget::add_b_levels(std::shared_ptr<GraphNode> node, std::map<std::shared_ptr<GraphNode>, double>& ret, double current) const {
+	auto next = current + node->w;
+	auto found = ret.find(node);
+	if (found == ret.end() || next < found->second)
+		ret[node] = next;
+		//ret.insert(std::make_pair(node, next));
+	for (auto d : node->ds)
+		add_b_levels(d.first, ret, next);
 }

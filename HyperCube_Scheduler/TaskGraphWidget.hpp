@@ -3,8 +3,11 @@
 #include "ui_TaskGraphWidget.h"
 #include <set>
 #include <map>
+#include <list>
+#include <memory>
 
 struct Node {
+	size_t i;
 	double x;
 	double y;
 	mutable double w;
@@ -23,11 +26,20 @@ struct Link {
 	}
 };
 
+struct GraphNode : public Node {
+	std::list<std::pair<std::shared_ptr<GraphNode>, double>> ds;
+
+	GraphNode(Node const& n) : Node{n.i, n.x, n.y, n.w} {}
+};
+
 class TaskGraphWidget : public QWidget {
 	Q_OBJECT
 public:
 	TaskGraphWidget(QWidget *parent = Q_NULLPTR);
 	~TaskGraphWidget();
+
+	std::list<std::pair<std::shared_ptr<GraphNode>, double>> get_b_levels() const;
+	std::list<std::shared_ptr<GraphNode>> to_graph() const;
 private:
 	double size, scale;
 
@@ -48,4 +60,6 @@ protected:
 	void mouseReleaseEvent(QMouseEvent *event) override;
 
 	std::pair<size_t const, Node>* find_node(double x, double y);
+
+	void add_b_levels(std::shared_ptr<GraphNode> node, std::map<std::shared_ptr<GraphNode>, double> &ret, double current = 0.0) const;
 };
