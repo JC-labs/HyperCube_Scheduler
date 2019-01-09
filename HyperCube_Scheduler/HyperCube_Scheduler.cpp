@@ -19,36 +19,6 @@ HyperCube_Scheduler::HyperCube_Scheduler(QWidget *parent) : QWidget(parent) {
 	});
 }
 
-double fill_link(size_t i, size_t j, std::vector<std::vector<double>> &links, double value = 0, size_t die_out = 0) {
-	if (die_out)
-		if (!--die_out)
-			return std::numeric_limits<double>::infinity();
-	if (i == j)
-		return value;
-	if (links.at(i).at(j) == std::numeric_limits<double>::infinity()) {
-		double ret = std::numeric_limits<double>::infinity();
-		for (size_t k = 0; k < links.size(); k++)
-			if (i != k && links.at(i).at(k) != std::numeric_limits<double>::infinity()) {
-				auto temp = fill_link(k, j, links, value + links.at(i).at(k), (die_out) ? die_out : 4);
-				if (temp < ret)
-					ret = temp;
-		}
-		return ret;
-	} else
-		return links.at(i).at(j) + value;
-}
-
-void fill_links(std::vector<std::vector<double>> &links) {
-	for (size_t i = 0; i < links.size(); i++)
-		for (size_t j = 0; j < links.at(i).size(); j++)
-			if (i != j && !links.at(i).at(j))
-				links.at(i).at(j) = std::numeric_limits<double>::infinity();
-
-	for (size_t i = 0; i < links.size(); i++)
-		for (size_t j = i + 1; j < links.at(i).size(); j++)
-			links.at(i).at(j) = links.at(j).at(i) = fill_link(i, j, links);
-}
-
 bool is(size_t what, std::list<std::pair<std::shared_ptr<GraphNode>, std::pair<double, size_t>>> const& where) {
 	return std::find_if(where.begin(), where.end(), [&what](auto const& a) -> bool {
 		return a.first->i == what;
@@ -71,8 +41,6 @@ void HyperCube_Scheduler::run() {
 	auto temp = processor_matrix->get();
 	auto nodes = temp.first;
 	auto links = temp.second;
-	fill_links(links);
-	processor_matrix->update_links(links);
 
 	auto b_levels = task_graph->get_b_levels();
 	std::vector<std::pair<double, double>> processors;

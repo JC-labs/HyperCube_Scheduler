@@ -48,13 +48,9 @@ ProcessorMatrixWidget::ProcessorMatrixWidget(QWidget *parent) : QWidget(parent) 
 		}, input);
 	});
 	ui.size->setValue(3);
+	on_cell_changed(0, 0);
 
-	connect(ui.links, &QTableWidget::cellChanged, this, [this](int row, int col) {
-		if (ui.links->item(col, row))
-			ui.links->item(col, row)->setText(ui.links->item(row, col)->text());
-		else
-			ui.links->setItem(col, row, new QTableWidgetItem(ui.links->item(row, col)->text()));
-	});
+	connect(ui.links, &QTableWidget::cellChanged, this, &ProcessorMatrixWidget::on_cell_changed);
 }
 ProcessorMatrixWidget::~ProcessorMatrixWidget() {}
 
@@ -75,10 +71,49 @@ std::vector<double> ProcessorMatrixWidget::get_nodes() const {
 	return ret;
 }
 
-void ProcessorMatrixWidget::update_links(std::vector<std::vector<double>>& links) {
+double ProcessorMatrixWidget::update_link(size_t i, size_t j, double value, size_t die_out) {
+	if (die_out)
+		if (!--die_out)
+			return std::numeric_limits<double>::infinity();
+	if (i == j)
+		return value;
+	if (ui.links->item(i, j)->text().toDouble() == std::numeric_limits<double>::infinity()) {
+		double ret = std::numeric_limits<double>::infinity();
+		for (size_t k = 0; k < ui.links->rowCount(); k++)
+			if (i != k && ui.links->item(i, k)->text().toDouble() != std::numeric_limits<double>::infinity()) {
+				auto temp = update_link(k, j, value + ui.links->item(i, k)->text().toDouble(), (die_out) ? die_out : 4);
+				if (temp < ret)
+					ret = temp;
+			}
+		return ret;
+	} else
+		return ui.links->item(i, j)->text().toDouble() + value;
+}
+void ProcessorMatrixWidget::on_cell_changed(int row, int col) {
+	disconnect(ui.links, &QTableWidget::cellChanged, this, &ProcessorMatrixWidget::on_cell_changed);
+
+	if (col != row) {
+		if (ui.links->item(col, row))
+			ui.links->item(col, row)->setText(ui.links->item(row, col)->text());
+		else
+			ui.links->setItem(col, row, new QTableWidgetItem(ui.links->item(row, col)->text()));
+	}
+
 	for (size_t i = 0; i < ui.links->rowCount(); i++)
-		for (size_t j = 0; j < ui.links->columnCount(); j++)
-			ui.links->item(i, j)->setText(QString::number(links.at(i).at(j)));
+		for (size_t j = i + 1; j < ui.links->columnCount(); j++)
+			if (i != j && !(ui.links->item(i, j)->flags() & Qt::ItemFlag::ItemIsEnabled)) {
+				ui.links->item(i, j)->setText(QString::number(std::numeric_limits<double>::infinity()));
+				ui.links->item(j, i)->setText(QString::number(std::numeric_limits<double>::infinity()));
+			}
+
+	for (size_t i = 0; i < ui.links->rowCount(); i++)
+		for (size_t j = i + 1; j < ui.links->columnCount(); j++) {
+			auto temp = update_link(i, j);
+			ui.links->item(i, j)->setText(QString::number(temp));
+			ui.links->item(j, i)->setText(QString::number(temp));
+		}
+
+	connect(ui.links, &QTableWidget::cellChanged, this, &ProcessorMatrixWidget::on_cell_changed);
 }
 
 #include <random>
