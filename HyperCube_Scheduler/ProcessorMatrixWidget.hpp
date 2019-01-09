@@ -7,6 +7,8 @@ class ProcessorMatrixWidget : public QWidget {
 public:
 	ProcessorMatrixWidget(QWidget *parent = Q_NULLPTR);
 	~ProcessorMatrixWidget();
+
+	void randomize(double min_n, double max_n, double min_l, double max_l);
 private:
 	Ui::ProcessorMatrixWidget ui;
 public slots:

@@ -23,6 +23,8 @@ class Ui_HyperCube_SchedulerClass
 public:
     QVBoxLayout *verticalLayout;
     QHBoxLayout *layout;
+    QHBoxLayout *horizontalLayout;
+    QPushButton *randomize;
     QPushButton *run;
 
     void setupUi(QWidget *HyperCube_SchedulerClass)
@@ -40,11 +42,25 @@ public:
 
         verticalLayout->addLayout(layout);
 
+        horizontalLayout = new QHBoxLayout();
+        horizontalLayout->setSpacing(6);
+        horizontalLayout->setObjectName(QStringLiteral("horizontalLayout"));
+        randomize = new QPushButton(HyperCube_SchedulerClass);
+        randomize->setObjectName(QStringLiteral("randomize"));
+
+        horizontalLayout->addWidget(randomize);
+
         run = new QPushButton(HyperCube_SchedulerClass);
         run->setObjectName(QStringLiteral("run"));
 
-        verticalLayout->addWidget(run);
+        horizontalLayout->addWidget(run);
 
+        horizontalLayout->setStretch(0, 1);
+        horizontalLayout->setStretch(1, 4);
+
+        verticalLayout->addLayout(horizontalLayout);
+
+        verticalLayout->setStretch(0, 1);
 
         retranslateUi(HyperCube_SchedulerClass);
 
@@ -54,6 +70,7 @@ public:
     void retranslateUi(QWidget *HyperCube_SchedulerClass)
     {
         HyperCube_SchedulerClass->setWindowTitle(QApplication::translate("HyperCube_SchedulerClass", "HyperCube_Scheduler", nullptr));
+        randomize->setText(QApplication::translate("HyperCube_SchedulerClass", "Randomize", nullptr));
         run->setText(QApplication::translate("HyperCube_SchedulerClass", "Run", nullptr));
     } // retranslateUi
 

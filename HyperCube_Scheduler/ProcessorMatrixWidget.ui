@@ -15,18 +15,11 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
-    <layout class="QHBoxLayout" name="horizontalLayout" stretch="4,0">
+    <layout class="QHBoxLayout" name="horizontalLayout" stretch="4">
      <item>
       <widget class="QSpinBox" name="size">
        <property name="minimum">
         <number>1</number>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="fill">
-       <property name="text">
-        <string>Fill</string>
        </property>
       </widget>
      </item>

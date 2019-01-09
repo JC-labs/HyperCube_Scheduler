@@ -1,5 +1,4 @@
 #include "ProcessorMatrixWidget.hpp"
-#include <random>
 #include <vector>
 
 #include <functional>
@@ -21,11 +20,6 @@ ProcessorMatrixWidget::ProcessorMatrixWidget(QWidget *parent) : QWidget(parent) 
 		ui.nodes->setHorizontalHeaderItem(0, new QTableWidgetItem(" "));
 		ui.links->setRowCount(value);
 		ui.links->setColumnCount(value);
-
-		//for (size_t j = 0; j < ui.links->columnCount(); j++)
-		//	ui.links->setColumnWidth(j, 15);
-		//for (size_t j = 0; j < ui.nodes->columnCount(); j++)
-		//	ui.nodes->setColumnWidth(j, 15);
 
 		for (size_t i = 0; i < ui.nodes->rowCount(); i++)
 			for (size_t j = 0; j < ui.nodes->columnCount(); j++) {
@@ -53,19 +47,6 @@ ProcessorMatrixWidget::ProcessorMatrixWidget(QWidget *parent) : QWidget(parent) 
 			}
 		}, input);
 	});
-	connect(ui.fill, &QPushButton::clicked, this, [this]() {
-		static std::mt19937_64 g(std::random_device{}());
-		static std::uniform_real_distribution<> d(0, 100);
-
-		for (size_t i = 0; i < ui.nodes->rowCount(); i++)
-			for (size_t j = 0; j < ui.nodes->columnCount(); j++)
-				ui.nodes->item(i, j)->setText(QString::number(d(g)));
-		for (size_t i = 0; i < ui.links->rowCount(); i++)
-			for (size_t j = 0; j < ui.links->columnCount(); j++)
-				if (ui.links->item(i, j)->flags() & Qt::ItemFlag::ItemIsEnabled)
-					ui.links->item(i, j)->setText(QString::number(d(g)));
-	});
-
 	ui.size->setValue(3);
 
 	connect(ui.links, &QTableWidget::cellChanged, this, [this](int row, int col) {
@@ -98,4 +79,18 @@ void ProcessorMatrixWidget::update_links(std::vector<std::vector<double>>& links
 	for (size_t i = 0; i < ui.links->rowCount(); i++)
 		for (size_t j = 0; j < ui.links->columnCount(); j++)
 			ui.links->item(i, j)->setText(QString::number(links.at(i).at(j)));
+}
+
+#include <random>
+void ProcessorMatrixWidget::randomize(double min_n, double max_n, double min_l, double max_l) {
+	static std::mt19937_64 g(std::random_device{}());
+	static std::uniform_real_distribution<> d_n(min_n, max_n), d_l(min_l, max_l);
+
+	for (size_t i = 0; i < ui.nodes->rowCount(); i++)
+		for (size_t j = 0; j < ui.nodes->columnCount(); j++)
+			ui.nodes->item(i, j)->setText(QString::number(d_n(g)));
+	for (size_t i = 0; i < ui.links->rowCount(); i++)
+		for (size_t j = 0; j < ui.links->columnCount(); j++)
+			if (ui.links->item(i, j)->flags() & Qt::ItemFlag::ItemIsEnabled)
+				ui.links->item(i, j)->setText(QString::number(d_l(g)));
 }

@@ -18,7 +18,7 @@ void TaskGraphWidget::paintEvent(QPaintEvent *event) {
 	p.setPen(QPen(QColor(10, 10, 10)));
 	p.setBrush(QBrush(QColor(255, 255, 255)));
 	p.setRenderHint(QPainter::Antialiasing, true);
-	p.setFont(QFont("Verdana", scale / 6));
+	p.setFont(QFont("Verdana", scale / 8));
 
 	if (trail)
 		p.drawLine(c_x * size + scale / 2, c_y * size + scale / 2,
@@ -179,4 +179,17 @@ void TaskGraphWidget::add_b_levels(std::shared_ptr<GraphNode> node, std::map<std
 	}
 	for (auto d : node->ds)
 		add_b_levels(d.first, ret, next, path + 1);
+}
+
+#include <random>
+void TaskGraphWidget::randomize(double min_n, double max_n, double min_l, double max_l) {
+	static std::mt19937_64 g(std::random_device{}());
+	static std::uniform_real_distribution<> d_n(min_n, max_n), d_l(min_l, max_l);
+
+	for (auto &node : nodes)
+		node.second.w = d_n(g);
+	for (auto &link : links)
+		link.w = d_l(g);
+
+	update();
 }

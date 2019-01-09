@@ -40,6 +40,8 @@ public:
 
 	std::list<std::pair<std::shared_ptr<GraphNode>, std::pair<double, size_t>>> get_b_levels() const;
 	std::list<std::shared_ptr<GraphNode>> to_graph() const;
+
+	void randomize(double min_n, double max_n, double min_l, double max_l);
 private:
 	double size, scale;
 
