@@ -117,11 +117,34 @@ void ProcessorMatrixWidget::on_cell_changed(int row, int col) {
 }
 
 std::ostream& operator<<(std::ostream &s, ProcessorMatrixWidget const& w) {
-
+	s << w.ui.size->value() << '\n';
+	for (size_t i = 0; i < w.ui.nodes->rowCount(); i++)
+		s << w.ui.nodes->item(i, 0)->text().toStdString() << ' ';
+	s << '\n';
+	for (size_t i = 0; i < w.ui.links->rowCount(); i++) {
+		for (size_t j = 0; j < w.ui.links->columnCount(); j++)
+			s << w.ui.links->item(i, j)->text().toStdString() << ' ';
+		s << '\n';
+	}
+	s << '\n';
 	return s;
 }
 std::istream& operator>>(std::istream &s, ProcessorMatrixWidget &w) {
-
+	size_t size;
+	s >> size;
+	w.ui.size->setValue(size);
+	for (size_t i = 0; i < w.ui.nodes->rowCount(); i++) {
+		std::string temp;
+		s >> temp;
+		w.ui.nodes->item(i, 0)->setText(QString::fromStdString(temp));
+	}
+	for (size_t i = 0; i < w.ui.links->rowCount(); i++)
+		for (size_t j = 0; j < w.ui.links->columnCount(); j++) {
+			std::string temp;
+			s >> temp;
+			w.ui.links->item(i, j)->setText(QString::fromStdString(temp));
+		}
+	w.update();
 	return s;
 }
 
