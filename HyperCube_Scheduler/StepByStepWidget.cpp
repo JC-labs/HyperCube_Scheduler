@@ -26,9 +26,9 @@ StepByStepWidget::StepByStepWidget(std::pair<std::vector<double>, std::vector<st
 	processors->setEditTriggers(QAbstractItemView::NoEditTriggers);
 	processors->setDisabled(true);
 	processors->setHorizontalHeaderItem(0, new QTableWidgetItem("Q"));
-	processors->setHorizontalHeaderItem(1, new QTableWidgetItem("S"));
-	processors->setHorizontalHeaderItem(1, new QTableWidgetItem("S + W"));
-	processors->setHorizontalHeaderItem(2, new QTableWidgetItem("S + W + T"));
+	processors->setHorizontalHeaderItem(1, new QTableWidgetItem("P_S"));
+	processors->setHorizontalHeaderItem(2, new QTableWidgetItem("R_S"));
+	processors->setHorizontalHeaderItem(3, new QTableWidgetItem("R_S + T"));
 	for (size_t i = 0; i < processors->columnCount(); i++)
 		processors->setColumnWidth(i, 50);
 
