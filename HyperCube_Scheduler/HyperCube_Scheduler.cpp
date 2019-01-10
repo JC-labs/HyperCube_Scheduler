@@ -12,14 +12,15 @@ HyperCube_Scheduler::HyperCube_Scheduler(QWidget *parent) : QWidget(parent) {
 	splitter->addWidget(task_graph = new TaskGraphWidget());
 	ui.layout->addWidget(splitter);
 
-	connect(ui.run, &QPushButton::clicked, this, &HyperCube_Scheduler::run);
-	connect(ui.save, &QPushButton::clicked, this, &HyperCube_Scheduler::save);
-	connect(ui.load, &QPushButton::clicked, this, &HyperCube_Scheduler::load);
-	connect(ui.exit, &QPushButton::clicked, this, &HyperCube_Scheduler::close);
 	connect(ui.randomize, &QPushButton::clicked, this, [this]() {
 		processor_matrix->randomize(0, 4, 0, 4);
 		task_graph->randomize(0, 4, 0, 4);
 	});
+	connect(ui.save, &QPushButton::clicked, this, &HyperCube_Scheduler::save);
+	connect(ui.load, &QPushButton::clicked, this, &HyperCube_Scheduler::load);
+	connect(ui.run, &QPushButton::clicked, this, &HyperCube_Scheduler::run);
+	connect(ui.step_by_step, &QPushButton::clicked, this, &HyperCube_Scheduler::step_by_step);
+	connect(ui.exit, &QPushButton::clicked, this, &HyperCube_Scheduler::close);
 }
 
 bool is(size_t what, std::list<std::pair<std::shared_ptr<GraphNode>, std::pair<double, size_t>>> const& where) {
@@ -83,6 +84,10 @@ void HyperCube_Scheduler::run() {
 	}
 
 	(new ResultWidget(nodes, result))->show();
+}
+#include "StepByStepWidget.hpp"
+void HyperCube_Scheduler::step_by_step() {
+	(new StepByStepWidget(processor_matrix->get(), task_graph->get_b_levels()))->show();
 }
 
 #include <fstream>

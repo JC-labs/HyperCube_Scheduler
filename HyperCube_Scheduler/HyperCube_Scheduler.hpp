@@ -13,6 +13,7 @@ public:
 	HyperCube_Scheduler(QWidget *parent = Q_NULLPTR);
 public slots:
 	void run();
+	void step_by_step();
 
 	void save() const;
 	void load();

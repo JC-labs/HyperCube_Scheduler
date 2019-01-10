@@ -9,7 +9,8 @@
 class ResultWidget : public QWidget {
 	Q_OBJECT
 public:
-	ResultWidget(std::vector<double> processors, std::list<std::tuple<std::shared_ptr<struct GraphNode>, size_t, double, double>> tasks, QWidget *parent = Q_NULLPTR);
+	ResultWidget(std::vector<double> processors, std::list<std::tuple<std::shared_ptr<struct GraphNode>, size_t, double, double>> tasks = {}, QWidget *parent = Q_NULLPTR);
+	//ResultWidget(std::vector<double> processors, std::list<std::tuple<std::shared_ptr<struct GraphNode>, size_t, double, double>> tasks, QWidget *parent = Q_NULLPTR);
 	~ResultWidget();
 protected:
 	void paintEvent(QPaintEvent *event) override;
