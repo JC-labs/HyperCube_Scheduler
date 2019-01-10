@@ -23,18 +23,18 @@ HyperCube_Scheduler::HyperCube_Scheduler(QWidget *parent) : QWidget(parent) {
 	connect(ui.exit, &QPushButton::clicked, this, &HyperCube_Scheduler::close);
 }
 
-bool is(size_t what, std::list<std::pair<std::shared_ptr<GraphNode>, std::pair<double, size_t>>> const& where) {
+inline bool is(size_t what, std::list<std::pair<std::shared_ptr<GraphNode>, std::pair<double, size_t>>> const& where) {
 	return std::find_if(where.begin(), where.end(), [&what](auto const& a) -> bool {
 		return a.first->i == what;
 	}) != where.end();
 }
-bool check(std::shared_ptr<GraphNode> what, std::list<std::pair<std::shared_ptr<GraphNode>, std::pair<double, size_t>>> const& where) {
+inline bool check(std::shared_ptr<GraphNode> what, std::list<std::pair<std::shared_ptr<GraphNode>, std::pair<double, size_t>>> const& where) {
 	for (auto d : what->ds)
 		if (is(d.first->i, where))
 			return false;
 	return true;
 }
-std::tuple<std::shared_ptr<GraphNode>, size_t, double, double> get(size_t what, std::list<std::tuple<std::shared_ptr<GraphNode>, size_t, double, double>> const& where) {
+inline std::tuple<std::shared_ptr<GraphNode>, size_t, double, double> get(size_t what, std::list<std::tuple<std::shared_ptr<GraphNode>, size_t, double, double>> const& where) {
 	return *std::find_if(where.begin(), where.end(), [&what](auto const& a) -> bool {
 		return std::get<0>(a)->i == what;
 	});

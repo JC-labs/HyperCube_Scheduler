@@ -11,11 +11,17 @@ private:
 protected:
 	class QTableWidget *b_levels, *processors;
 	class ResultWidget *results;
+
+	std::list<std::pair<std::shared_ptr<struct GraphNode>, std::pair<double, size_t>>> tasks;
+	std::vector<std::vector<double>> links;
+	size_t current = 0;
+
+	std::shared_ptr<struct GraphNode> node(size_t id) const;
 public:
 	StepByStepWidget(std::pair<std::vector<double>, std::vector<std::vector<double>>> processors, 
 					 std::list<std::pair<std::shared_ptr<struct GraphNode>, std::pair<double, size_t>>> tasks,
 					 QWidget *parent = Q_NULLPTR);
 	~StepByStepWidget();
 public slots:
-	void step();
+	void step(bool first = false);
 };

@@ -10,8 +10,12 @@ class ResultWidget : public QWidget {
 	Q_OBJECT
 public:
 	ResultWidget(std::vector<double> processors, std::list<std::tuple<std::shared_ptr<struct GraphNode>, size_t, double, double>> tasks = {}, QWidget *parent = Q_NULLPTR);
-	//ResultWidget(std::vector<double> processors, std::list<std::tuple<std::shared_ptr<struct GraphNode>, size_t, double, double>> tasks, QWidget *parent = Q_NULLPTR);
 	~ResultWidget();
+
+	inline std::list<std::tuple<std::shared_ptr<struct GraphNode>, size_t, double, double>>& operator*() { return tasks; }
+	inline std::list<std::tuple<std::shared_ptr<struct GraphNode>, size_t, double, double>>* operator->() { return &tasks; }
+	inline std::list<std::tuple<std::shared_ptr<struct GraphNode>, size_t, double, double>> const& operator*() const { return tasks; }
+	inline std::list<std::tuple<std::shared_ptr<struct GraphNode>, size_t, double, double>> const* operator->() const { return &tasks; }
 protected:
 	void paintEvent(QPaintEvent *event) override;
 private:
