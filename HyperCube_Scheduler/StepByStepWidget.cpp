@@ -120,44 +120,6 @@ void StepByStepWidget::step(bool first) {
 		processors->item(i, 2)->setText(QString::number(start));
 		processors->item(i, 3)->setText(QString::number(start + duration));
 	}
-
-	/*
-	std::vector<std::pair<double, double>> processors;
-	for (size_t i = 0; i < nodes.size(); i++)
-		processors.push_back(std::make_pair(nodes.at(i), 0.0));
-
-	std::list<std::tuple<std::shared_ptr<GraphNode>, size_t, double, double>> result;
-
-	while (b_levels.size()) {
-		auto current = b_levels.begin();
-		while (!check(current->first, b_levels))
-			current++;
-
-		size_t ret_i = -1;
-		double ret_duration = std::numeric_limits<double>::infinity();
-		double ret_start = std::numeric_limits<double>::infinity();
-		for (size_t i = 0; i < nodes.size(); i++) {
-			double start = processors.at(i).second;
-			for (auto d : current->first->ds) {
-				auto item = get(d.first->i, result);
-				auto temp = std::get<2>(item) + std::get<3>(item)
-					+ d.second * links.at(i).at(std::get<1>(item));
-				if (temp > start)
-					start = temp;
-			}
-			double duration = current->first->w / nodes.at(i);
-
-			if (start + duration < ret_start + ret_duration) {
-				ret_start = start;
-				ret_duration = duration;
-				ret_i = i;
-			}
-		}
-		result.push_back(std::make_tuple(current->first, ret_i, ret_start, ret_duration));
-		processors.at(ret_i).second = ret_start + ret_duration;
-		b_levels.erase(current);
-	}
-	*/
 }
 
 #include <algorithm>
