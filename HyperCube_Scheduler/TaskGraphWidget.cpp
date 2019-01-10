@@ -193,3 +193,12 @@ void TaskGraphWidget::randomize(double min_n, double max_n, double min_l, double
 
 	update();
 }
+
+std::ostream& operator<<(std::ostream &s, TaskGraphWidget const& w) {
+
+	return s;
+}
+std::istream& operator>>(std::istream &s, TaskGraphWidget &w) {
+
+	return s;
+}

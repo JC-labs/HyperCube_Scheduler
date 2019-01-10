@@ -116,6 +116,15 @@ void ProcessorMatrixWidget::on_cell_changed(int row, int col) {
 	connect(ui.links, &QTableWidget::cellChanged, this, &ProcessorMatrixWidget::on_cell_changed);
 }
 
+std::ostream& operator<<(std::ostream &s, ProcessorMatrixWidget const& w) {
+
+	return s;
+}
+std::istream& operator>>(std::istream &s, ProcessorMatrixWidget &w) {
+
+	return s;
+}
+
 #include <random>
 void ProcessorMatrixWidget::randomize(double min_n, double max_n, double min_l, double max_l) {
 	static std::mt19937_64 g(std::random_device{}());

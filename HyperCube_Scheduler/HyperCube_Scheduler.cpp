@@ -13,6 +13,9 @@ HyperCube_Scheduler::HyperCube_Scheduler(QWidget *parent) : QWidget(parent) {
 	ui.layout->addWidget(splitter);
 
 	connect(ui.run, &QPushButton::clicked, this, &HyperCube_Scheduler::run);
+	connect(ui.save, &QPushButton::clicked, this, &HyperCube_Scheduler::save);
+	connect(ui.load, &QPushButton::clicked, this, &HyperCube_Scheduler::load);
+	connect(ui.exit, &QPushButton::clicked, this, &HyperCube_Scheduler::close);
 	connect(ui.randomize, &QPushButton::clicked, this, [this]() {
 		processor_matrix->randomize(0, 4, 0, 4);
 		task_graph->randomize(0, 4, 0, 4);
@@ -80,4 +83,22 @@ void HyperCube_Scheduler::run() {
 	}
 
 	(new ResultWidget(nodes, result))->show();
+}
+
+#include <fstream>
+void HyperCube_Scheduler::save() const {
+	std::ofstream f;
+	f.open("save.dat");
+
+	f << *task_graph << '\n' << *processor_matrix;
+
+	f.close();
+}
+void HyperCube_Scheduler::load() {
+	std::ifstream f;
+	f.open("save.dat");
+
+	f >> *task_graph >> *processor_matrix;
+
+	f.close();
 }
