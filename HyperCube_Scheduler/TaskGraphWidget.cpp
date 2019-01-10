@@ -194,11 +194,51 @@ void TaskGraphWidget::randomize(double min_n, double max_n, double min_l, double
 	update();
 }
 
+std::ostream& operator<<(std::ostream &s, Node const& n) {
+	s << n.i << ' ' << n.x << ' ' << n.y << ' ' << n.w;
+	return s;
+}
+std::istream& operator>>(std::istream &s, Node &n) {
+	s >> n.i >> n.x >> n.y >> n.w;
+	return s;
+}
+std::ostream& operator<<(std::ostream &s, Link const& l) {
+	s << l.n1 << ' ' << l.n2 << ' ' << l.w;
+	return s;
+}
+std::istream& operator>>(std::istream &s, Link &l) {
+	s >> l.n1 >> l.n2 >> l.w;
+	return s;
+}
 std::ostream& operator<<(std::ostream &s, TaskGraphWidget const& w) {
-
+	s << INDEX_COUNTER << '\n';
+	s << w.nodes.size() << '\n';
+	for (auto pair : w.nodes)
+		s << pair.first << ' ' << pair.second << '\n';
+	s << w.links.size() << '\n';
+	for (auto link : w.links)
+		s << link << '\n';
 	return s;
 }
 std::istream& operator>>(std::istream &s, TaskGraphWidget &w) {
+	w.nodes.clear();
+	w.links.clear();
 
+	s >> INDEX_COUNTER;
+	size_t size;
+	s >> size;
+	for (size_t i = 0; i < size; i++) {
+		size_t temp_i;
+		Node temp_n;
+		s >> temp_i >> temp_n;
+		w.nodes.insert(std::make_pair(temp_i, temp_n));
+	}
+	s >> size;
+	for (size_t i = 0; i < size; i++) {
+		Link temp;
+		s >> temp;
+		w.links.insert(temp);
+	}
+	w.update();
 	return s;
 }
