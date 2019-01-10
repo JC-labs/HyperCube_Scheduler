@@ -63,6 +63,7 @@ public:
 	std::list<std::shared_ptr<GraphNode>> to_graph() const;
 
 	void randomize(double min_n, double max_n, double min_l, double max_l);
+	void clear();
 
 	friend std::ostream& operator<<(std::ostream &s, TaskGraphWidget const& w);
 	friend std::istream& operator>>(std::istream &s, TaskGraphWidget &w);

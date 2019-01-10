@@ -194,6 +194,13 @@ void TaskGraphWidget::randomize(double min_n, double max_n, double min_l, double
 	update();
 }
 
+void TaskGraphWidget::clear() {
+	nodes.clear();
+	links.clear();
+	INDEX_COUNTER = 0;
+	update();
+}
+
 std::ostream& operator<<(std::ostream &s, Node const& n) {
 	s << n.i << ' ' << n.x << ' ' << n.y << ' ' << n.w;
 	return s;

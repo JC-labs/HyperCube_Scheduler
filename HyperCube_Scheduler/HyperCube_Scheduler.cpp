@@ -18,6 +18,9 @@ HyperCube_Scheduler::HyperCube_Scheduler(QWidget *parent) : QWidget(parent) {
 	});
 	connect(ui.save, &QPushButton::clicked, this, &HyperCube_Scheduler::save);
 	connect(ui.load, &QPushButton::clicked, this, &HyperCube_Scheduler::load);
+	connect(ui.clear, &QPushButton::clicked, this, [this]() {
+		task_graph->clear();
+	});
 	connect(ui.run, &QPushButton::clicked, this, &HyperCube_Scheduler::run);
 	connect(ui.step_by_step, &QPushButton::clicked, this, &HyperCube_Scheduler::step_by_step);
 	connect(ui.exit, &QPushButton::clicked, this, &HyperCube_Scheduler::close);

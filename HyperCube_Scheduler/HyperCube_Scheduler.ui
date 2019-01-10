@@ -18,7 +18,7 @@
     <layout class="QHBoxLayout" name="layout"/>
    </item>
    <item>
-    <layout class="QHBoxLayout" name="horizontalLayout" stretch="2,1,1,4,2,1">
+    <layout class="QHBoxLayout" name="horizontalLayout" stretch="2,1,1,1,4,2,1">
      <item>
       <widget class="QPushButton" name="randomize">
        <property name="text">
@@ -37,6 +37,13 @@
       <widget class="QPushButton" name="load">
        <property name="text">
         <string>Load</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="clear">
+       <property name="text">
+        <string>Clear</string>
        </property>
       </widget>
      </item>
