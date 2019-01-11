@@ -14,6 +14,8 @@ ProcessorMatrixWidget::ProcessorMatrixWidget(QWidget *parent) : QWidget(parent) 
 	ui.setupUi(this);
 
 	connect(ui.size, qOverload<int>(&QSpinBox::valueChanged), this, [this](int input) {
+		disconnect(ui.links, &QTableWidget::cellChanged, this, &ProcessorMatrixWidget::on_cell_changed);
+
 		size_t value = pow(2, input);
 		ui.nodes->setRowCount(value);
 		ui.nodes->setColumnCount(1);
@@ -46,11 +48,11 @@ ProcessorMatrixWidget::ProcessorMatrixWidget(QWidget *parent) : QWidget(parent) 
 				item->setFlags(item->flags().setFlag(Qt::ItemFlag::ItemIsEnabled, true));
 			}
 		}, input);
+
+		connect(ui.links, &QTableWidget::cellChanged, this, &ProcessorMatrixWidget::on_cell_changed);
 	});
 	ui.size->setValue(3);
 	on_cell_changed(0, 0);
-
-	connect(ui.links, &QTableWidget::cellChanged, this, &ProcessorMatrixWidget::on_cell_changed);
 }
 ProcessorMatrixWidget::~ProcessorMatrixWidget() {}
 
