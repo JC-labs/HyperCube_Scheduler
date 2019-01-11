@@ -115,7 +115,8 @@ void StepByStepWidget::step(bool first) {
 			if (temp > start)
 				start = temp;
 		}
-		double duration = node(current)->w / processors->item(i, 0)->text().toDouble();
+		double duration = node(b_levels->item(current, 0)->text().toULongLong())->w 
+			/ processors->item(i, 0)->text().toDouble();
 
 		processors->item(i, 2)->setText(QString::number(start));
 		processors->item(i, 3)->setText(QString::number(start + duration));
